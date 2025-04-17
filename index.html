@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Green Market India - Sustainable Shopping</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="logo.png" alt="Green Market India Logo">
+            <span>Green Market India</span>
+        </div>
+        <div class="header-buttons">
+            <button class="retailer-signup" onclick="window.location.href='retailer-signup.html'">
+                <i class="fas fa-store"></i> Become a Retailer
+            </button>
+        </div>
+    </header>
+    <div class="container">
+        <div class="header">
+            <h1>Welcome to Green Market India</h1>
+            <p>Your trusted marketplace for sustainable and eco-friendly products</p>
+            <div class="features">
+                <div class="feature">
+                    <i class="fas fa-leaf"></i>
+                    <span>100% Organic</span>
+                </div>
+                <div class="feature">
+                    <i class="fas fa-truck"></i>
+                    <span>Fast Delivery</span>
+                </div>
+                <div class="feature">
+                    <i class="fas fa-rupee-sign"></i>
+                    <span>Best Prices</span>
+                </div>
+            </div>
+        </div>
+        <div class="form-container">
+            <form onsubmit="event.preventDefault(); handleLogin()">
+                <div class="form-group">
+                    <i class="fas fa-user"></i>
+                    <input type="text" id="username" name="username" placeholder="Username" required>
+                </div>
+                
+                <div class="form-group">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" id="password" name="password" placeholder="Password" required>
+                </div>
+
+                <div class="form-group">
+                    <i class="fas fa-users"></i>
+                    <select id="user-type" name="user-type" required>
+                        <option value="">Select User Type</option>
+                        <option value="customer">Customer</option>
+                        <option value="retailer">Retailer</option>
+                        <option value="admin">Admin</option>
+                    </select>
+                </div>
+                
+                <button type="submit">
+                    <i class="fas fa-sign-in-alt"></i> Login
+                </button>
+            </form>
+            <div class="signup-buttons">
+                <button onclick="window.location.href='user-signup.html'">
+                    <i class="fas fa-user-plus"></i> New User? Sign Up
+                </button>
+            </div>
+        </div>
+    </div>
+    <footer>
+        <p>&copy; 2024 Green Market India. All rights reserved.</p>
+        <div class="social-links">
+            <a href="#"><i class="fab fa-facebook"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+        </div>
+    </footer>
+    <script>
+        function handleLogin() {
+            const userType = document.getElementById('user-type').value;
+            switch(userType) {
+                case 'customer':
+                    window.location.href = 'customer-home.html';
+                    break;
+                case 'retailer':
+                    window.location.href = 'retailer-home.html';
+                    break;
+                case 'admin':
+                    window.location.href = 'admin-home.html';
+                    break;
+            }
+        }
+    </script>
+</body>
+</html>
+

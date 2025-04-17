@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Green Market India - Checkout</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="logo.png" alt="Green Market India Logo">
+            <span>Green Market India</span>
+        </div>
+        <div class="header-buttons">
+            <button onclick="window.location.href='index.html'">
+                <i class="fas fa-home"></i> Home
+            </button>
+            <button onclick="window.location.href='cart.html'">
+                <i class="fas fa-shopping-cart"></i> Cart
+            </button>
+            <button onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </button>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="header">
+            <h1>Checkout</h1>
+            <p>Complete your purchase by providing your details</p>
+        </div>
+
+        <div class="checkout-container">
+            <div class="checkout-form">
+                <h2>Shipping Information</h2>
+                <form id="shippingForm">
+                    <div class="form-group">
+                        <label for="fullName">Full Name</label>
+                        <input type="text" id="fullName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone Number</label>
+                        <input type="tel" id="phone" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="address">Delivery Address</label>
+                        <textarea id="address" required></textarea>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="city">City</label>
+                            <input type="text" id="city" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="state">State</label>
+                            <input type="text" id="state" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="pincode">PIN Code</label>
+                            <input type="text" id="pincode" required>
+                        </div>
+                    </div>
+                </form>
+
+                <h2>Payment Method</h2>
+                <div class="payment-methods">
+                    <div class="payment-option">
+                        <input type="radio" id="upi" name="payment" value="upi" checked>
+                        <label for="upi">
+                            <i class="fas fa-mobile-alt"></i> UPI
+                        </label>
+                    </div>
+                    <div class="payment-option">
+                        <input type="radio" id="card" name="payment" value="card">
+                        <label for="card">
+                            <i class="fas fa-credit-card"></i> Credit/Debit Card
+                        </label>
+                    </div>
+                    <div class="payment-option">
+                        <input type="radio" id="netbanking" name="payment" value="netbanking">
+                        <label for="netbanking">
+                            <i class="fas fa-university"></i> Net Banking
+                        </label>
+                    </div>
+                </div>
+
+                <div class="payment-details" id="paymentDetails">
+                    <!-- Payment details will be shown based on selection -->
+                </div>
+            </div>
+
+            <div class="order-summary">
+                <h2>Order Summary</h2>
+                <div class="summary-items" id="summaryItems">
+                    <!-- Cart items will be populated here -->
+                </div>
+                <div class="summary-total">
+                    <div class="summary-row">
+                        <span>Subtotal</span>
+                        <span id="subtotal">₹0</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>GST (5%)</span>
+                        <span id="gst">₹0</span>
+                    </div>
+                    <div class="summary-row total">
+                        <span>Total</span>
+                        <span id="total">₹0</span>
+                    </div>
+                </div>
+                <button class="place-order-btn" onclick="placeOrder()">
+                    <i class="fas fa-lock"></i> Place Order
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Load cart data from localStorage
+        function loadCartData() {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const summaryItems = document.getElementById('summaryItems');
+            let subtotal = 0;
+
+            summaryItems.innerHTML = '';
+            cart.forEach(item => {
+                const itemTotal = item.price * item.quantity;
+                subtotal += itemTotal;
+                
+                const itemElement = document.createElement('div');
+                itemElement.className = 'summary-item';
+                itemElement.innerHTML = `
+                    <div class="item-info">
+                        <span class="item-name">${item.name}</span>
+                        <span class="item-quantity">x${item.quantity}</span>
+                    </div>
+                    <span class="item-price">₹${itemTotal}</span>
+                `;
+                summaryItems.appendChild(itemElement);
+            });
+
+            const gst = subtotal * 0.05;
+            const total = subtotal + gst;
+
+            document.getElementById('subtotal').textContent = `₹${subtotal}`;
+            document.getElementById('gst').textContent = `₹${gst}`;
+            document.getElementById('total').textContent = `₹${total}`;
+        }
+
+        // Handle payment method selection
+        document.querySelectorAll('input[name="payment"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                const paymentDetails = document.getElementById('paymentDetails');
+                const method = this.value;
+
+                let detailsHTML = '';
+                switch(method) {
+                    case 'upi':
+                        detailsHTML = `
+                            <div class="form-group">
+                                <label for="upiId">UPI ID</label>
+                                <input type="text" id="upiId" placeholder="username@upi" required>
+                            </div>
+                        `;
+                        break;
+                    case 'card':
+                        detailsHTML = `
+                            <div class="form-group">
+                                <label for="cardNumber">Card Number</label>
+                                <input type="text" id="cardNumber" placeholder="1234 5678 9012 3456" required>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="expiry">Expiry Date</label>
+                                    <input type="text" id="expiry" placeholder="MM/YY" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="cvv">CVV</label>
+                                    <input type="text" id="cvv" placeholder="123" required>
+                                </div>
+                            </div>
+                        `;
+                        break;
+                    case 'netbanking':
+                        detailsHTML = `
+                            <div class="form-group">
+                                <label for="bank">Select Bank</label>
+                                <select id="bank" required>
+                                    <option value="">Select your bank</option>
+                                    <option value="sbi">State Bank of India</option>
+                                    <option value="hdfc">HDFC Bank</option>
+                                    <option value="icici">ICICI Bank</option>
+                                    <option value="axis">Axis Bank</option>
+                                </select>
+                            </div>
+                        `;
+                        break;
+                }
+
+                paymentDetails.innerHTML = detailsHTML;
+            });
+        });
+
+        // Place order function
+        function placeOrder() {
+            if (!document.getElementById('shippingForm').checkValidity()) {
+                showNotification('Please fill in all required fields', 'error');
+                return;
+            }
+
+            const paymentMethod = document.querySelector('input[name="payment"]:checked').value;
+            const paymentDetails = document.getElementById('paymentDetails');
+            
+            if (!paymentDetails.querySelector('input, select')?.value) {
+                showNotification('Please provide payment details', 'error');
+                return;
+            }
+
+            // Clear cart
+            localStorage.removeItem('cart');
+            
+            // Show success message
+            showNotification('Order placed successfully!', 'success');
+            
+            // Redirect to order confirmation page
+            setTimeout(() => {
+                window.location.href = 'order-confirmation.html';
+            }, 2000);
+        }
+
+        // Show notification
+        function showNotification(message, type = 'success') {
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.innerHTML = `
+                <i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i>
+                <span>${message}</span>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.classList.add('fade-out');
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        }
+
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                window.location.href = 'index.html';
+            }
+        }
+
+        // Initialize
+        loadCartData();
+    </script>
+
+    <style>
+        .checkout-container {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .checkout-form {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+        }
+
+        .payment-methods {
+            display: flex;
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .payment-option {
+            flex: 1;
+        }
+
+        .payment-option input[type="radio"] {
+            display: none;
+        }
+
+        .payment-option label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 1rem;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .payment-option input[type="radio"]:checked + label {
+            border-color: #2ecc71;
+            background: #f8f9fa;
+        }
+
+        .order-summary {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            height: fit-content;
+        }
+
+        .summary-items {
+            margin: 1rem 0;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .item-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .item-quantity {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .summary-total {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 2px solid #eee;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+
+        .summary-row.total {
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: #2ecc71;
+        }
+
+        .place-order-btn {
+            width: 100%;
+            padding: 1rem;
+            background: #2ecc71;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .place-order-btn:hover {
+            background: #27ae60;
+        }
+
+        @media (max-width: 768px) {
+            .checkout-container {
+                grid-template-columns: 1fr;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .payment-methods {
+                flex-direction: column;
+            }
+        }
+    </style>
+</body>
+</html> 

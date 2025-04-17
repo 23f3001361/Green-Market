@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Green Market India - Retailer Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="logo.png" alt="Green Market India Logo">
+            <span>Green Market India</span>
+        </div>
+        <div class="header-buttons">
+            <button onclick="window.location.href='add-product.html'">
+                <i class="fas fa-plus"></i> Add Product
+            </button>
+            <button class="cart-button" onclick="window.location.href='cart.html'">
+                <i class="fas fa-shopping-cart"></i>
+                <span class="cart-text">Cart</span>
+                <span class="cart-count">(<span id="cart-count">0</span>)</span>
+            </button>
+            <button class="logout" onclick="window.location.href='index.html'">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </button>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="dashboard">
+            <div class="dashboard-header">
+                <h1>Retailer Dashboard</h1>
+                <div class="business-info">
+                    <h2>Organic Farms India</h2>
+                    <p><i class="fas fa-map-marker-alt"></i> Bangalore, Karnataka</p>
+                    <p><i class="fas fa-phone"></i> +91 9876543210</p>
+                    <p><i class="fas fa-envelope"></i> contact@organicfarmsindia.com</p>
+                </div>
+            </div>
+
+            <div class="dashboard-stats">
+                <div class="stat-card">
+                    <i class="fas fa-rupee-sign"></i>
+                    <div class="stat-info">
+                        <h3>Total Sales</h3>
+                        <p>₹45,678</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-shopping-cart"></i>
+                    <div class="stat-info">
+                        <h3>Orders</h3>
+                        <p>128</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-box"></i>
+                    <div class="stat-info">
+                        <h3>Products</h3>
+                        <p>15</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-star"></i>
+                    <div class="stat-info">
+                        <h3>Rating</h3>
+                        <p>4.8/5</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dashboard-content">
+                <div class="products-section">
+                    <h2>Your Products</h2>
+                    <div class="product-filters">
+                        <select id="category-filter">
+                            <option value="">All Categories</option>
+                            <option value="food">Food</option>
+                            <option value="clothing">Clothing</option>
+                            <option value="handicraft">Handicraft</option>
+                            <option value="organic">Organic</option>
+                        </select>
+                        <select id="status-filter">
+                            <option value="">All Status</option>
+                            <option value="active">Active</option>
+                            <option value="out-of-stock">Out of Stock</option>
+                        </select>
+                    </div>
+                    <div class="product-list" id="product-list">
+                        <!-- Products will be populated here -->
+                    </div>
+                </div>
+
+                <div class="orders-section">
+                    <h2>Recent Orders</h2>
+                    <div class="orders-list">
+                        <div class="order-item">
+                            <div class="order-header">
+                                <span class="order-id">#ORD12345</span>
+                                <span class="order-date">Today, 2:30 PM</span>
+                            </div>
+                            <div class="order-details">
+                                <p>Organic Basmati Rice (2kg) × 2</p>
+                                <p>Organic Honey (500g) × 1</p>
+                            </div>
+                            <div class="order-footer">
+                                <span class="order-total">₹1,297</span>
+                                <span class="order-status pending">Pending</span>
+                            </div>
+                        </div>
+                        <div class="order-item">
+                            <div class="order-header">
+                                <span class="order-id">#ORD12344</span>
+                                <span class="order-date">Yesterday, 5:45 PM</span>
+                            </div>
+                            <div class="order-details">
+                                <p>Organic Turmeric Powder (200g) × 1</p>
+                            </div>
+                            <div class="order-footer">
+                                <span class="order-total">₹249</span>
+                                <span class="order-status completed">Completed</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sample product data
+        const products = [
+            {
+                id: 1,
+                name: 'Organic Basmati Rice',
+                price: 299,
+                category: 'food',
+                stock: 50,
+                status: 'active',
+                image: 'basmati.png'
+            },
+            {
+                id: 2,
+                name: 'Organic Honey',
+                price: 399,
+                category: 'food',
+                stock: 30,
+                status: 'active',
+                image: 'https://images.unsplash.com/photo-1587049352851-8d4e89133924?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'
+            },
+            {
+                id: 3,
+                name: 'Organic Turmeric Powder',
+                price: 249,
+                category: 'food',
+                stock: 0,
+                status: 'out-of-stock',
+                image: 'turmeric.png'
+            },
+            {
+                id: 5,
+                name: 'Bamboo Toothbrush',
+                price: 199,
+                category: 'organic',
+                stock: 40,
+                status: 'active',
+                image: 'toothbrush.png'
+            },
+            
+            {
+                id: 14,
+                name: 'Handmade Paper Notebook',
+                price: 199,
+                category: 'handicraft',
+                stock: 20,
+                status: 'active',
+                image: 'https://images.unsplash.com/photo-1581235720704-06d3acfcb36f?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'
+            },
+            {
+                id: 15,
+                name: 'Organic Green Tea',
+                price: 349,
+                category: 'food',
+                stock: 45,
+                status: 'active',
+                image: 'https://images.unsplash.com/photo-1564890369478-c89ca6d9cde9?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'
+            }
+        ];
+
+        function displayProducts(productsToShow) {
+            const productList = document.getElementById('product-list');
+            productList.innerHTML = '';
+            
+            productsToShow.forEach(product => {
+                const productDiv = document.createElement('div');
+                productDiv.className = 'product-item';
+                productDiv.innerHTML = `
+                    <div class="product-image">
+                        <img src="${product.image}" alt="${product.name}" onerror="this.src='https://via.placeholder.com/300x300?text=Product+Image'">
+                        <span class="product-status ${product.status}">${product.stock} in stock</span>
+                    </div>
+                    <div class="product-details">
+                        <h3>${product.name}</h3>
+                        <p class="price">₹${product.price}</p>
+                        <div class="product-actions">
+                            <button onclick="editProduct(${product.id})">
+                                <i class="fas fa-edit"></i> Edit
+                            </button>
+                            <button class="delete" onclick="deleteProduct(${product.id})">
+                                <i class="fas fa-trash"></i> Delete
+                            </button>
+                        </div>
+                    </div>
+                `;
+                productList.appendChild(productDiv);
+            });
+        }
+
+        function filterProducts() {
+            const category = document.getElementById('category-filter').value;
+            const status = document.getElementById('status-filter').value;
+            
+            let filteredProducts = products;
+            
+            if (category) {
+                filteredProducts = filteredProducts.filter(p => p.category === category);
+            }
+            
+            if (status) {
+                filteredProducts = filteredProducts.filter(p => p.status === status);
+            }
+            
+            displayProducts(filteredProducts);
+        }
+
+        function editProduct(productId) {
+            // Redirect to edit product page
+            window.location.href = `edit-product.html?id=${productId}`;
+        }
+
+        function deleteProduct(productId) {
+            if (confirm('Are you sure you want to delete this product?')) {
+                // Implement delete logic here
+                showNotification('Product deleted successfully');
+            }
+        }
+
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.className = 'notification';
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+
+        // Initial display
+        displayProducts(products);
+
+        // Add event listeners for filters
+        document.getElementById('category-filter').addEventListener('change', filterProducts);
+        document.getElementById('status-filter').addEventListener('change', filterProducts);
+    </script>
+</body>
+</html>

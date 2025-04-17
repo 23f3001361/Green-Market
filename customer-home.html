@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Green Market India - Customer Home</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="logo.png" alt="Green Market India Logo">
+            <span>Green Market India</span>
+        </div>
+        <div class="header-buttons">
+            <button class="cart-button" onclick="window.location.href='cart.html'">
+                <i class="fas fa-shopping-cart"></i>
+                <span class="cart-text">Cart</span>
+                <span class="cart-count">(<span id="cart-count">0</span>)</span>
+            </button>
+            <button class="logout" onclick="window.location.href='index.html'">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </button>
+        </div>
+    </header>
+    <div class="container">
+        <div class="header">
+            <h1>Welcome to Green Market India</h1>
+            <p>Explore sustainable products from various retailers</p>
+        </div>
+        <div class="product-filters">
+            <select id="category-filter" onchange="filterProducts()">
+                <option value="">All Categories</option>
+                <option value="organic">Organic Products</option>
+                <option value="handicraft">Handicrafts</option>
+                <option value="clothing">Sustainable Clothing</option>
+                <option value="food">Organic Food</option>
+            </select>
+            <select id="price-filter" onchange="filterProducts()">
+                <option value="">Price Range</option>
+                <option value="0-500">Under ₹500</option>
+                <option value="500-1000">₹500 - ₹1000</option>
+                <option value="1000-2000">₹1000 - ₹2000</option>
+                <option value="2000+">Above ₹2000</option>
+            </select>
+        </div>
+        <div class="product-list" id="product-list">
+            <!-- Products will be populated here -->
+        </div>
+    </div>
+    <footer>
+        <p>&copy; 2024 Green Market India. All rights reserved.</p>
+        <div class="social-links">
+            <a href="#"><i class="fab fa-facebook"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+        </div>
+    </footer>
+    <script>
+        // Sample product data
+        const products = [
+            {
+                id: 1,
+                name: 'Organic Basmati Rice',
+                price: 299,
+                category: 'food',
+                retailer: 'Organic Farms India',
+                description: 'Premium quality organic basmati rice, grown without any chemical fertilizers or pesticides.',
+                image: 'basmati.png'
+            },
+            {
+                id: 2,
+                name: 'Handmade Jute Bag',
+                price: 499,
+                category: 'handicraft',
+                retailer: 'Eco Crafts',
+                description: 'Beautifully crafted jute bag, perfect for daily use and shopping.',
+                image: 'https://images.unsplash.com/photo-1566150902887-9679ecc155ba?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'
+            },
+            {
+                id: 3,
+                name: 'Organic Cotton T-Shirt',
+                price: 799,
+                category: 'clothing',
+                retailer: 'Green Threads',
+                description: '100% organic cotton t-shirt, made with sustainable practices.',
+                image: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'
+            },
+            {
+                id: 4,
+                name: 'Organic Honey',
+                price: 399,
+                category: 'food',
+                retailer: 'Nature\'s Best',
+                description: 'Pure organic honey collected from natural beehives.',
+                image: 'https://images.unsplash.com/photo-1587049352851-8d4e89133924?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'
+            },
+            {
+                id: 5,
+                name: 'Bamboo Toothbrush',
+                price: 199,
+                category: 'organic',
+                retailer: 'Eco Essentials',
+                description: 'Eco-friendly bamboo toothbrush with charcoal bristles.',
+                image: 'toothbrush.png'
+            },
+            {
+                id: 6,
+                name: 'Handmade Pottery Set',
+                price: 1299,
+                category: 'handicraft',
+                retailer: 'Clay Crafts',
+                description: 'Beautiful set of handmade pottery items for your home.',
+                image: 'https://images.unsplash.com/photo-1584735935682-2f2b69dff9d2?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'
+            },
+            {
+                id: 7,
+                name: 'Organic Turmeric Powder',
+                price: 249,
+                category: 'food',
+                retailer: 'Spice Garden',
+                description: 'Pure organic turmeric powder with high curcumin content.',
+                image: 'turmeric.png'
+            },
+            {
+                id: 8,
+                name: 'Handwoven Silk Saree',
+                price: 2999,
+                category: 'clothing',
+                retailer: 'Silk Route',
+                description: 'Traditional handwoven silk saree with intricate designs.',
+                image: 'https://images.unsplash.com/photo-1595777457583-95e059d581b8?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'
+            },
+            {
+                id: 9,
+                name: 'Organic Coconut Oil',
+                price: 349,
+                category: 'organic',
+                retailer: 'Coconut Paradise',
+                description: 'Cold-pressed virgin coconut oil for cooking and skincare.',
+                image: 'https://images.unsplash.com/photo-1623428187969-5da2dcea5ebf?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'
+            },
+            {
+                id: 10,
+                name: 'Handmade Wooden Toys',
+                price: 899,
+                category: 'handicraft',
+                retailer: 'Wooden Wonders',
+                description: 'Eco-friendly wooden toys made from sustainable wood.',
+                image: 'https://images.unsplash.com/photo-1596462502278-27bfdc403348?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'
+            }
+        ];
+
+        // Cart functionality
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        updateCartCount();
+
+        function updateCartCount() {
+            const count = cart.reduce((total, item) => total + item.quantity, 0);
+            document.getElementById('cart-count').textContent = count;
+        }
+
+        function addToCart(productId) {
+            const product = products.find(p => p.id === productId);
+            const cartItem = cart.find(item => item.id === productId);
+            
+            if (cartItem) {
+                cartItem.quantity += 1;
+            } else {
+                cart.push({
+                    id: product.id,
+                    name: product.name,
+                    price: product.price,
+                    quantity: 1,
+                    image: product.image,
+                    retailer: product.retailer
+                });
+            }
+            
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartCount();
+            showNotification('Product added to cart!');
+        }
+
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.className = 'notification';
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+
+        function filterProducts() {
+            const category = document.getElementById('category-filter').value;
+            const priceRange = document.getElementById('price-filter').value;
+            
+            let filteredProducts = products;
+            
+            if (category) {
+                filteredProducts = filteredProducts.filter(p => p.category === category);
+            }
+            
+            if (priceRange) {
+                const [min, max] = priceRange.split('-').map(Number);
+                if (max) {
+                    filteredProducts = filteredProducts.filter(p => p.price >= min && p.price <= max);
+                } else {
+                    filteredProducts = filteredProducts.filter(p => p.price >= min);
+                }
+            }
+            
+            displayProducts(filteredProducts);
+        }
+
+        function displayProducts(productsToShow) {
+            const productList = document.getElementById('product-list');
+            productList.innerHTML = '';
+            
+            productsToShow.forEach(product => {
+                const productDiv = document.createElement('div');
+                productDiv.className = 'product-item';
+                productDiv.innerHTML = `
+                    <div class="product-image">
+                        <img src="${product.image}" 
+                             alt="${product.name}" 
+                             onerror="this.onerror=null; this.src='https://via.placeholder.com/300x300?text=${encodeURIComponent(product.name)}'"
+                             loading="lazy">
+                    </div>
+                    <div class="product-details">
+                        <h3>${product.name}</h3>
+                        <p class="retailer">${product.retailer}</p>
+                        <p class="description">${product.description}</p>
+                        <p class="price">₹${product.price}</p>
+                        <button onclick="addToCart(${product.id})">
+                            <i class="fas fa-cart-plus"></i> Add to Cart
+                        </button>
+                    </div>
+                `;
+                productList.appendChild(productDiv);
+            });
+        }
+
+        // Initial display
+        displayProducts(products);
+    </script>
+</body>
+</html>
