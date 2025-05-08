@@ -4,7 +4,7 @@ A sustainable e-commerce platform connecting eco-conscious consumers with organi
 
 ## 🌱 About the Project
 
-Green Market India is a web-based marketplace that promotes sustainable shopping by connecting customers with retailers offering organic and eco-friendly products. The platform aims to make sustainable shopping accessible and convenient while supporting local organic retailers.
+Green Market India is a web-based marketplace frontend that promotes sustainable shopping by connecting customers with retailers offering organic and eco-friendly products. The platform aims to make sustainable shopping accessible and convenient while supporting local organic retailers.
 
 ## ✨ Features
 
@@ -28,7 +28,6 @@ Green Market India is a web-based marketplace that promotes sustainable shopping
 - HTML5
 - CSS3
 - JavaScript
-- Font Awesome Icons
 
 ## 📁 Project Structure
 
@@ -92,5 +91,3 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 For any queries or support, please contact the project maintainers.
 
 ---
-
-Made with ❤️ for a sustainable future 
